@@ -1,14 +1,23 @@
+# return type data suatu method.. 
+# kasihkan di akhir -> TypeDataNya:
 class Monster:
-     def __init__(self, name, level, hp, mana, role):
+    def init(self, name: str, hp: int) -> None:
         self.name = name
-        self.level = level
         self.hp = hp
-        self.mana = mana
-        print(f"✨ Monster {self.name} telah di-summon!")
+        print(f"✨ Monster {self.name} telah di summon!")
 
-    def __str__(self):
+    def take_damage(self, damage: int) -> bool:
+        self.hp -= damage
+        print(f"💥 {self.name} terkena {damage} damage\n")
+        if self.hp == 0:
+            print(f"🚫 {self.name} tereliminasi dari arena!")
+            return False #gagal
+        # berhasil
+        return True
+
+    def str(self) -> str:
         status = "🟢 HIDUP" 
         if self.hp == 0:
-            status = "💀 MATI"
-            
-        return f"[Monster] {self.name}| HP: {self.hp} | STATUS: {status}"
+            status = "💀 MATI" 
+
+        return f"👹 [Monster] {self.name} | HP: {self.hp} | {status}"

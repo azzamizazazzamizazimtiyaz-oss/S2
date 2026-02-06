@@ -1,19 +1,20 @@
-from hero import Hero # panggil class Hero.
+from hero import Hero
+from monster import Monster
 
+# panggil parent class sebagai parameter
+# child class = mewarisi semua attr & method dari parent
 class Mage(Hero):
-    def __init__(self, name, level, hp, mana):
-        super().__init__(name, level, hp, mana, role="Mage")
+    def init(self, name: str, hp: int):
+        # super() = mengakses method dari parent class
+        super().init(name, hp, job="Mage")
 
-
-    def critical(self, target):
-        dmg = 50
-        print(f"🔥 {self.name} menggunakan HELLFIRE METEOR")
-        print(f"👺 {target.name} terkena critical {dmg} DMG!")
-        self.attack(target)
-        target.damaged(dmg)
-
-    def cast_spell(self, target):
-        dmg = 10
-        print(f"🔥 {self.name} menggunakan magic attack")
-        self.attack(target)
-        target.damaged(dmg)
+    # method baru khusus mage
+    def cast_spell(self):
+        print(f"{self.name} cast spell magic attack...")
+    
+    # timpa ultimate skill
+    def ultimate(self, enemy: Monster):
+        dmg = 100
+        print(f"{self.name} menggunakan ultimate skill: ATOMIC BOMB! | {dmg} DMG")
+        # monster kena damage
+        enemy.take_damage(dmg)

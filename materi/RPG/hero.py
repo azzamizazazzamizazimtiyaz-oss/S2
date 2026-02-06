@@ -1,91 +1,67 @@
+# type hint: harus ada ini 
+from __future__ import annotations
+from monster import Monster
+
 class Hero:
+    # pertama kali dipanggil (summon)
     # self = dirinya sendiri / internal
-    # __init__ = dipanggil pertama kali
-    def __init__(self, name, level, hp, mana, role):
+    def init(self, name: str, hp: int, job: str):
         self.name = name
-        self.level = level
-        self.hp = hp
-        self.mana = mana
-        self.role = role
-        print(f"✨ Hero [{self.role}]  {self.name} telah di-summon!")
-
-    # mengganti print objek dari bentuk memori 0x100..
-    # menjadi format string, biar lebih enak dibaca
-    def __str__(self):
-        status = "🟢 HIDUP" 
-        if self.hp == 0:
-            status = "💀 MATI"
-            
-        return f"[{self.name}] | HP: {self.hp} | STATUS: {status}"
-
-    def damaged(self, damage):
-        self.hp -= damage
-        # \n = new line = baris baru
-        print(f"💥 {self.name} terkena {damage} damage!\n")
-        if self.hp == 0:
-            print(f"🚫 {self.name} tereliminasi!\n")
+        self.job = job
+        # multi-select = ctrl+d (ganti jdi__hp)
+        self.hp = hp # __namaAttr = private
+        print(f"✨ Hero {self.name} telah di summon!")
     
-    def attack(self, enemy):
+    # @property = getter versi modern
+    @property
+    def hp(self):
+        return self.__hp
+    
+    # @namaGetterNya.setter = setter versi modern
+    @hp.setter
+    def hp(self, value: int):
+        if value < 0:
+            value = 0
+        self.__hp = value
+
+
+    # getter (ambil attr private)
+    # pola penuli   an: get_namaAttr
+    # def get_hp(self):
+    #     return self.__hp
+
+    # setter (ubah attr private)
+    # pola penulisan: set_namaAttr
+    # def set_hp(self, addHp):
+    #     self.__hp += addHp
+
+    def heal(self):
+        print(f"🧪 {self.name} meminum potion...")
+        heal_amount = 20
+        self.__hp += heal_amount
+        print(f"💚 HP {self.name} bertambah +{heal_amount}")
+
+    def take_damage(self, damage: int):
+        # self.__hp = self.__hp - damage (aslinya)
+        self.__hp -= damage
+        print(f"💥 {self.name} terkena {damage} damage\n")
+        # print(f"💚 Sisa HP: {self.__hp}")
+        if self.__hp == 0:
+            print(f"🚫 {self.name} tereliminasi dari arena!")
+    
+    def attack(self, enemy: Monster, damage: int):
         print(f"⚔️ {self.name} menyerang {enemy.name}!")
+        # panggil method lain dari dalam
+        enemy.take_damage(damage)
 
-    def heal(self, amount):
-        self.hp += amount
-        print(f"💊 {self.name} mendapat heal +{amount}!")
+    # fungsi cek status terkini 
+    def __str(self):
+        status = "🟢 HIDUP" 
+        if self.__hp == 0:
+            status = "💀 MATI" 
 
-    def critical(self, damage):
-        print(f"👺 {self.nama} terkena {damage} damage!\n")
-
-    # getter ; mengambil attribute yg private
-    def get_hp(self):
-        return self.hp 
+        return f"[{self.job}] {self.name} | HP: {self.__hp} | {status}"
     
-    # setter ; mengubah attribute yg private dari luar class
-    def set__hp(self, add_hp):
-        # tambahan validasi jgn sampai lewat 100
-        self.__hp += add_hp
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-# # panggil/summon hero-nya (buat objek)
-# alucard = Hero("Alucard", 10, 100, 100)
-# eudora = Hero("Eudora", 10, 100, 100)
-# print("--- BATTLE START ---")
-# alucard.attack(eudora)
-# eudora.damaged(10)
-# # di balas bwaang
-# eudora.attack(alucard)
-# alucard.damaged(5)
-# alucard.damaged(5)
-# alucard.damaged(5)
-# # cek status terkini
-# print(alucard)
-# print(eudora)
-# alucard.attack(eudora)
-# print(">>> SKILL 1 API MANYALA BANG")
-# eudora.damaged(80)
-# print(eudora)
-# eudora.heal(50)
-# eudora.attack(alucard)
-# print(">>> SKILL 1 ES BATU")
-# alucard.damaged(80)
-# print(alucard)
-# alucard.heal(10)
-
-# print("--BATTLE TERKINI--")
-# print(eudora)
-# print(alucard)
+    # ultimate attack
+    def ultimate(self, enemy: Monster):
+        print(f"{self.name} bengong...")
